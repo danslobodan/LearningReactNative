@@ -30,11 +30,14 @@ router.post('/signin', async (req, res) => {
 
     const user = await User.findOne({ email });
 
+    console.log(user);
+
     if (!user)
         return res.status(404).send({ error: 'Invalid username or password' });
 
     try {
-        await user.comparePassworde(password);
+        await user.comparePassword(password);
+        
         const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY);
         res.send({ token });
     } catch (err) {

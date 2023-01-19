@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', function (next) {
+
     const user = this;
 
     if (!user.isModified('password')) return next();
@@ -27,6 +28,7 @@ userSchema.pre('save', function (next) {
             if (err) return next(err);
 
             user.password = hash;
+            next();
         })
     })
 })
