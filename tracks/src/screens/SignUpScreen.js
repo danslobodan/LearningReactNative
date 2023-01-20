@@ -1,21 +1,19 @@
 import React, { useContext } from "react";
 import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-elements';
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { NavigationEvents } from "react-navigation";
 
 import { Context as AuthContext } from '../context/authContext';
 
 import AuthForm from "../components/AuthForm";
-import Spacer from "../components/Spacer";
 import NavLink from "../components/NavLink";
 
-const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = () => {
 
-    const { state, signUp } = useContext(AuthContext);
+    const { state, signUp, clearErrorMessage } = useContext(AuthContext);
 
     return (
         <View style={styles.container}>
-
+            <NavigationEvents onWillFocus={clearErrorMessage} />
             <AuthForm 
                 headerText="Sign Up for Tracker"
                 errorMessage={state.errorMessage}
