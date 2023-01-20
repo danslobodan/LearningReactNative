@@ -1,17 +1,21 @@
 require('./models/User');
+require('./models/Track');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const requireAuth = require('./middlewares/requireAuth');
 
-const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes');
+const trackRoutes = require('./routes/trackRoutes');
 
 dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
 app.use(authRoutes);
+app.use(trackRoutes);
 
 const mongoUri = `mongodb+srv://dbuser:${process.env.MONGOPASSWORD}@cluster0.stmbi.mongodb.net/?retryWrites=true&w=majority`;
 
