@@ -1,8 +1,12 @@
 import * as Location from 'expo-location';
 
-const tenMetersWithDegrees = 0.00001;
+const tenMetersWithDegrees = 0.0001;
 
-const getLocation = increment => {
+export const getLocation = increment => {
+
+    const lat = 44.0298282 + (increment * tenMetersWithDegrees);
+    const lon = 20.9104691 + (increment * tenMetersWithDegrees);
+
     return {
         timestamp: 1000000,
         coords: {
@@ -10,10 +14,9 @@ const getLocation = increment => {
             heading: 0,
             accuracy: 5,
             altitudeAccuracy: 5,
-            altitude: 5,
-            longitude: 44.0298282 + increment * tenMetersWithDegrees,
-            latitude: 20.9104691 + increment * tenMetersWithDegrees,
-            mocked: true
+            altitude: 285,
+            longitude: lon,
+            latitude: lat
         }
     }
 }
