@@ -4,39 +4,47 @@ import { Accuracy, requestForegroundPermissionsAsync, watchPositionAsync } from 
 export default (shouldTrack, callback) => {
 
     const [err, setErr] = useState(null);
-    const [subscriber, setSubscriber] = useState(null);
-
-    const startWatching = async () => {
-        const { granted } = await requestForegroundPermissionsAsync();
-        
-        if (!granted) {
-            setErr('Location permission not granted');
-            return;
-        }
-
-        const sub = await watchPositionAsync({
-            accuracy: Accuracy.BestForNavigation,
-            timeInterval: 1000,
-            distanceInterval: 10
-        }, (location) => {
-            callback(location);
-        });
-
-        setSubscriber(sub);
-        setErr('');
-    }
-
-    const stopWatching = () => {
-        subscriber.remove();
-        setSubscriber(null);
-    }
 
     useEffect(() => {
+
+        let subscriber;
+
+        const startWatching = async () => {
+            const { granted } = await requestForegroundPermissionsAsync();
+            
+            if (!granted) {
+                setErr('Location permission not granted');
+                return;
+            }
+    
+            subscriber = await watchPositionAsync({
+                accuracy: Accuracy.BestForNavigation,
+                timeInterval: 1000,
+                distanceInterval: 10
+            }, (location) => {
+                callback(location);
+            });
+    
+            setErr('');
+        }
+
+        const stopWatching = async () => {
+            if (subscriber)
+                subscriber.remove();
+            
+            subscriber = null;
+        }
+
         if (shouldTrack)
             startWatching();
         else
             stopWatching();
-    }, [shouldTrack]);
+
+        return () => {
+            if (subscriber)
+                subscriber.remove();
+        }
+    }, [shouldTrack, callback]);
 
     return [err]
 }
