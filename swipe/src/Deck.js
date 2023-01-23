@@ -1,19 +1,29 @@
-import React, { useState } from "react";
-import { View } from 'react-native';
+import React, { useRef } from "react";
+import { Animated, PanResponder } from 'react-native';
 
 const Deck = ({ data, renderCard }) => {
 
-    const renderCards = () => {
+    const position = useRef(new Animated.ValueXY()).current;
 
-        return data.map(item => {
-            return renderCard(item);
-        })
-    }
+    const panResponder = useRef(PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderMove: (event, gesture) => {
+            position.setValue({ x: gesture.dx , y: gesture.dy });
+        },
+        onPanResponderRelease: () => {
+        }
+    })).current;
+
+
+    const renderCards = () => data.map(item => renderCard(item));
 
     return (
-        <View>
+        <Animated.View 
+            style={position.getLayout()}
+            {...panResponder.panHandlers}
+        >
             {renderCards()}
-        </View>
+        </Animated.View>
     )
 }
 
