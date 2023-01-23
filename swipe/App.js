@@ -19,7 +19,7 @@ export default function App() {
   const renderCard = (item) => {
 
     return (
-      <Card key={item.id} image={{ uri: item.uri }}>
+      <Card key={item.id}>
           <Card.Title>{item.text}</Card.Title>
           <Image source={{ uri: item.uri }} style={{ height: 150 }}/>
           <Text style={{ marginBottom: 10 }}>I can customize this card further</Text>
@@ -34,9 +34,30 @@ export default function App() {
     )
   }
 
+  const renderNoMoreCards = () => {
+
+    return (
+      <Card>
+        <Card.Title>All Done!</Card.Title>
+        <Text style={{ marginBottom: 10 }}>There's no more content here</Text>
+        <Button 
+          icon={{ name: 'code' }} 
+          title="Get more!" 
+          buttonStyle={{
+            backgroundColor: "#03A9F4" 
+          }}
+        />
+      </Card>     
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <Deck data={DATA} renderCard={renderCard} />
+      <Deck 
+        data={DATA} 
+        renderCard={renderCard}
+        renderNoMoreCards={renderNoMoreCards}
+      />
     </View>
   );
 }
