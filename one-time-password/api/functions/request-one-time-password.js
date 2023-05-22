@@ -20,10 +20,11 @@ module.exports = function (req, res) {
                 {
                     body: `You code is ${code}`,
                     to: `+${phone}`,
-                    from: '+15077097853',
+                    from: '+12543292709',
                 },
                 (err) => {
                     if (err) {
+                        console.log(err);
                         return res.status(422).send({ error: err });
                     }
 
